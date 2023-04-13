@@ -1,0 +1,42 @@
+
+
+void cam_get_gray(uint16_t* image) {
+//	FIFO_PREPARE;
+//	uint16_t pixel = 0;
+	for (uint16_t i = 0; i < IMG_WIDTH * IMG_HEIGHT; ++i) {
+//		read_fifo_pixel(&pixel);
+
+		uint16_t blue = ((image[i]&0xF800)>>11);
+		uint16_t green = ((image[i] & 0x07E0)>>6);
+		uint16_t red = (image[i] & 0x001F);
+		uint16_t gray = (red*0.2989 + green*0.5870 + blue*0.1140);
+
+
+uint16_t* getPixel(uint16_t* image,uint8_t x, uint8_t y){
+//	image[IMG_WIDTH*y-1+x] = 0xF800;
+	return &image[IMG_WIDTH*(y-1)+x];
+
+}
+
+
+uint16_t sobelFilter(uint16_t* img,uint16_t i){
+	int ops[9]= {-1,-2,-1,0,0,0,1,2,1};
+	int ops2[9]= {-1,0,1,-2,0,2,-1,0,1};
+	int Gx = 0;
+	int Gy = 0;
+	int imgF;
+	int count=0;
+	for(int  g = i-1; g<=i+1;g++){
+		for (int h=g-IMG_WIDTH; h<=g+IMG_WIDTH;h+=IMG_WIDTH){
+			Gx += img[h]*ops[count];
+			Gy += img[h]*ops2[count];
+			count++;
+		}
+	}
+	imgF= sqrt((Gx*Gx)+(Gy*Gy));
+
+	if (imgF>>11<15){
+		imgF=0;
+	}
+	return __REVSH(imgF);
+}
