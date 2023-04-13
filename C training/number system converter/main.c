@@ -91,7 +91,7 @@ int main(void) {
       for (int z=0;z<index;z++){        
         result[z]= temp[count];
         count = count-1;
-        printf("Output=%d",result[z]);
+        printf("%d",result[z]);
         
       }
       
@@ -178,11 +178,11 @@ int main(void) {
       
       for (int z=0;z<index;z++){
         if (temp[count]>9){
-          printf("Output=%c",temp[count]);
+          printf("%c",temp[count]);
           count = count-1;
         }
         else{
-        printf("Output=%d",temp[count]);
+        printf("%d",temp[count]);
         count = count-1;
           }
         
